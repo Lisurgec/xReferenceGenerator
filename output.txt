@@ -1,0 +1,187 @@
+1 //	***--==Tic Tac Toe==--***
+2 //	      ^^^^^^^^^^^^^
+3 //		    *********
+4 //
+5 //     _Grid_       _Elements_
+6 //	 1 | 2 | 3 		 0 | 1 | 2
+7 //	---|---|---		---|---|---
+8 //	 4 | 5 | 6 		 3 | 4 | 5
+9 //	---|---|---		---|---|--- 
+10 //	 7 | 8 | 9 		 6 | 7 | 8 
+11 //
+12 //            _teams_
+13 //            X     O
+14 //
+15 //	Code Author: Gabriel Prestemon
+16 #include <stdio.h>
+17 #include <stdlib.h>
+18 #include <ctype.h>
+19 
+20 int printGrid(char grid[9]);
+21 int checkWinner(char grid[9]);
+22 
+23 int main (void)
+24 {
+25 	char grid[9] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+26 	char user1[21];
+27 	char user2[21];
+28 	int userIn = 0;
+29 	int occupy = 0;
+30 	int win = 0;
+31 	char winner;
+32 	int i, j = 0;
+33 	
+34 	printf ("Welcome to Tic Tac Toe!\n");
+35 	printf (" %c | %c | %c \n---|---|---\n", grid[0], grid[1], grid[2]);
+36 	printf (" %c | %c | %c \n---|---|---\n", grid[3], grid[4], grid[5]);
+37 	printf (" %c | %c | %c \n", grid[6], grid[7], grid[8]);
+38 	
+39 	printf ("\nEnter player 1 name: \n");
+40 	scanf ("%20s", user1);
+41 
+42 	printf ("\nEnter player 2 name: \n");
+43 	scanf ("%20s", user2);
+44 
+45 	while (win == 0){
+46 		while (occupy == 0){
+47 			printf ("\n%s to move, input grid number:\n", user1);
+48 			scanf ("%d", &userIn);
+49 			if (userIn > 9 || userIn < 1){
+50 				printf ("Invalid input. Please enter another");
+51 			} else {
+52 				occupy = isdigit(grid[userIn - 1]);
+53 				if (occupy != 0) {
+54 					grid[userIn - 1] = 'X';
+55 					break;
+56 				} else if (occupy == 0){
+57 					printf ("This spot is already taken. Please enter another.\n");
+58 				}	
+59 			}
+60 		}
+61 
+62 		printGrid(&grid[0]);
+63 		win = checkWinner(&grid[0]);
+64 		occupy = 0;
+65 
+66 
+67 		j = 0;
+68 		for (i = 0; i < 9; i++){
+69 			if (isdigit(grid[i]) == 0){
+70 				j++;
+71 			}
+72 		}
+73 		if (j == 9 && win == 0){
+74 			printf ("\nIt's a draw!\n\n");
+75 			break;
+76 		}
+77 		if (win != 0){
+78 			break;
+79 		}
+80 
+81 
+82 		while (occupy == 0){
+83 			printf ("\n%s to move, input grid number:\n", user2);
+84 			scanf ("%d", &userIn);
+85 			if (userIn > 9 || userIn < 1){
+86 				printf ("Invalid input. Please enter another");
+87 			} else {
+88 				occupy = isdigit(grid[userIn - 1]);
+89 				if (occupy != 0) {
+90 					grid[userIn - 1] = 'O';
+91 					break;
+92 				} else if (occupy == 0){
+93 					printf ("This spot is already taken. Please enter another.\n");
+94 				}		
+95 			}
+96 		}
+97 
+98 		printGrid(&grid[0]);
+99 		win = checkWinner(&grid[0]);
+100 		occupy = 0;
+101 	}
+102 
+103 	if (win !=0){
+104 		switch (win) {
+105 			case 88:
+106 				printf ("...And the winner is... %s!\n\n", user1);
+107 				break;
+108 			case 79:
+109 				printf ("...And the winner is... %s!\n\n", user2);
+110 				break;
+111 		}
+112 	}
+113 
+114 	return 0;
+115 }
+116 
+117 int printGrid(char grid[9])
+118 {
+119 	printf ("\n %c | %c | %c \n---|---|---\n", grid[0], grid[1], grid[2]);
+120 	printf (" %c | %c | %c \n---|---|---\n", grid[3], grid[4], grid[5]);
+121 	printf (" %c | %c | %c \n", grid[6], grid[7], grid[8]);
+122 	return 0;
+123 }
+124 
+125 int checkWinner(char grid[9])
+126 {
+127 	int win = 0;
+128 	int alphG[10];
+129 	int i = 0;
+130 
+131 	for (i = 0; i < 9; i++){
+132 		alphG[i] = grid[i];
+133 	}
+134 
+135 	if (alphG[0] == alphG[1] && alphG[0] == alphG[2]) { //1
+136 		win = alphG[0];
+137 	}
+138 	if (alphG[3] == alphG[4] && alphG[3] == alphG[5]) { //2
+139 		win = alphG[3];
+140 	}
+141 	if (alphG[6] == alphG[7] && alphG[6] == alphG[8]) { //3
+142 		win = alphG[6];
+143 	}
+144 	if (alphG[0] == alphG[3] && alphG[0] == alphG[6]) { //4
+145 		win = alphG[0];
+146 	}
+147 	if (alphG[1] == alphG[4] && alphG[1] == alphG[7]) { //5
+148 		win = alphG[1];
+149 	}
+150 	if (alphG[2] == alphG[5] && alphG[2] == alphG[8]) { //6
+151 		win = alphG[2];
+152 	}
+153 	if (alphG[0] == alphG[4] && alphG[0] == alphG[8]) { //7
+154 		win = alphG[0];
+155 	}
+156 	if (alphG[2] == alphG[4] && alphG[2] == alphG[6]) { //8
+157 		win = alphG[2];
+158 	}
+159 	return win;
+160 }
+161 
+162 //     _Grid_       _Elements_
+163 //	 1 | 2 | 3 		 0 | 1 | 2
+164 //	---|---|---		---|---|---
+165 //	 4 | 5 | 6 		 3 | 4 | 5
+166 //	---|---|---		---|---|--- 
+167 //	 7 | 8 | 9 		 6 | 7 | 8 
+168 //  
+169 // WINNING COMBOS
+170 // 1 2 3		0 1 2
+171 // 4 5 6		3 4 5
+172 // 7 8 9		6 7 8
+173 // 1 4 7		0 3 6 
+174 // 2 5 8		1 4 7 
+175 // 3 6 9		2 5 8 
+176 // 1 5 9		0 4 8
+177 // 3 5 7		2 4 6
+178 //
+179 //WINNING COMBO ALGORITHMS 
+180 //1	(alphG[0] == alphG[1] && alphG[0] == alphG[2])
+181 //2	(alphG[3] == alphG[4] && alphG[3] == alphG[5])
+182 //3	(alphG[6] == alphG[7] && alphG[6] == alphG[8])
+183 //4	(alphG[0] == alphG[3] && alphG[0] == alphG[6])
+184 //5	(alphG[1] == alphG[4] && alphG[1] == alphG[7])
+185 //6	(alphG[2] == alphG[5] && alphG[2] == alphG[8])
+186 //7	(alphG[0] == alphG[4] && alphG[0] == alphG[8])
+187 //8	(alphG[2] == alphG[4] && alphG[2] == alphG[6])
