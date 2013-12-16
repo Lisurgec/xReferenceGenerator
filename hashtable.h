@@ -103,13 +103,8 @@ public:
 		return hashTable[i];
 	}
 	void insert(T item){
-		int key;
-		try{
-			key = hashFunction(item.name, size);
-		}
-		catch(exception e){
-			key = hashFunction(item, size);
-		}
+		
+		int key = hashFunction(item.name, size);
 		while(hashTable[key] != ""){
 			//Probing here
 			key++;
